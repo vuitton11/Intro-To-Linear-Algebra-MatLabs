@@ -1,0 +1,274 @@
+% [Veton Abazovic]
+% [6221]
+% Section [C1]
+% Math 250 MATLAB Lab Assignment #5
+format compact 
+eigshow
+% Question 1a
+% (i) 1 positive eigenvalue
+% (ii) 1 negative eigenvalue
+% (iii) Let eigenvalue be represented as t, By observing
+% the graph we can tell that ax = t*x and when moving both
+% ax and x we can determine the size of Ax and x which Ax is 1.5 times greater  
+% than x. When converting Ax to negative the size of x is half of the length
+% we can tell that t is about -.5 because it is facing the other direction 
+%Question 2
+A = [1 3; 4 2]/4
+A =
+    0.2500    0.7500
+    1.0000    0.5000
+% Question 2a
+syms t; I = eye(2); p = det(A - t*I)
+p =
+t^2 - (3*t)/4 - 5/8
+% To solve for det(A) we need to do the following operations
+% (0.25*0.5) - (0.75*1) which is equal to -0.625 which is the 
+% same as -5/8 from the asnwer above
+% Question 2b
+solve(p)
+ans =
+ -1/2
+  5/4
+% the values are the same if not extremely close
+% it also has the same positivity and negativity
+% Question 2c
+ A = [3 1; -2 4]/4
+A =
+    0.7500    0.2500
+   -0.5000    1.0000
+ syms t; I= eye(2); p = det(A- t*I)
+p =
+t^2 - (7*t)/4 + 7/8
+ solve (p)
+ans =
+ 7/8 - (7^(1/2)*1i)/8
+ (7^(1/2)*1i)/8 + 7/8
+% The eigenvalue are imaginary, thus is not real
+% because of this we can explain why in question 1 we could not get them to 
+% face each other
+% Question 3 
+rand('seed' , 6221)
+ A = rmat(3,3), z = eig(A) - real(eig(A))
+A =
+     8     2     4
+     6     8     7
+     8     1     1
+z =
+     0
+     0
+     0
+syms t; I = eye(3); p = det(A - t*I)
+p =
+- t^3 + 17*t^2 - 29*t - 124
+ figure; ezplot(p, [-10, 10]), grid
+ figure; ezplot(p, [-10, 20]), grid
+% Question 3b
+ [P D] = eig(A)
+P =
+   -0.4689   -0.2335   -0.2546
+   -0.8147    0.9356   -0.4505
+   -0.3411   -0.2648    0.8557
+D =
+   14.3847         0         0
+         0    4.5217         0
+         0         0   -1.9064
+% The diagonal entries of D are very close if not exactly the
+% same as the graphical roots of A
+ p1 = P(:,1), p2 = P(:,2), p3 = P(:,3)
+p1 =
+   -0.4689
+   -0.8147
+   -0.3411
+p2 =
+   -0.2335
+    0.9356
+   -0.2648
+p3 =
+   -0.2546
+   -0.4505
+    0.8557
+ A*p1 - D(1,1)*p1, A*p2 - D(2,2)*p2, A*p3 - D(3,3)*p3
+ans =
+   1.0e-14 *
+   -0.2665
+   -0.1776
+   -0.0888
+ans =
+   1.0e-14 *
+    0.1554
+   -0.3553
+   -0.0222
+ans =
+   1.0e-14 *
+   -0.1776
+    0.0444
+   -0.1110
+% From these calculations we can determine that the columns
+% of P are exactly the basis for R^n which consist the eigenvectors of A
+% So each column of P is an eigenvector and each entry in D is a corresponding 
+% eigenvaue
+% Question 3c
+ A = P*D*inv(P)
+A =
+    8.0000    2.0000    4.0000
+    6.0000    8.0000    7.0000
+    8.0000    1.0000    1.0000
+ % A^5 = P * D^5 * P^-1
+ A^5
+ans =
+   1.0e+05 *
+    3.0130    1.1761    1.5156
+    5.2017    2.0622    2.6332
+    2.1945    0.8543    1.1023
+ P*D^5*inv(P)
+ans =
+   1.0e+05 *
+    3.0130    1.1761    1.5156
+    5.2017    2.0622    2.6332
+    2.1945    0.8543    1.1023
+ %A^10 = P*D^10*P^-1
+ A^10
+ans =
+   1.0e+11 *
+    1.8522    0.7264    0.9334
+    3.2178    1.2620    1.6217
+    1.3475    0.5284    0.6791
+ P*D^10*inv(P)
+ans =
+   1.0e+11 *
+    1.8522    0.7264    0.9334
+    3.2178    1.2620    1.6217
+    1.3475    0.5284    0.6791
+% Question 4a
+ A= eye(2); B= rand(2);
+ A(:,1) = B(:,1)/sum(B(:,1)); A(:,2) = B(:,2)/sum(B(:,2))
+A =
+    0.3549    0.3685
+    0.6451    0.6315
+ [1 1]*A
+ans =
+    1.0000    1.0000
+% Since we used vector mutiplication we get
+% that A is a transition Matrix becuase its equal to 1
+% Question 4b
+ u = nulbasis(A -eye(2)), v = u/sum(u)
+u =
+    0.5712
+    1.0000
+v =
+    0.3635
+    0.6365
+ A*v
+ans =
+    0.3635
+    0.6365
+ figure; plot([0,v(1)], [0, v(2)]), hold on
+% Question 4c
+ w = rand(2,1), p = w/sum(w)
+w =
+    0.6548
+    0.5245
+p =
+    0.5552
+    0.4448
+ p = A*p, plot([0,p(1)], [0,p(2)], ':'), hold on
+p =
+    0.3609
+    0.6391
+ p = A*p, plot([0,p(1)], [0,p(2)], ':'), hold on
+p =
+    0.3636
+    0.6364
+ p = A*p, plot([0,p(1)], [0,p(2)], ':'), hold on
+p =
+    0.3635
+    0.6365
+ p = A*p, plot([0,p(1)], [0,p(2)], ':'), hold on
+p =
+    0.3635
+    0.6365
+ p = A*p, plot([0,p(1)], [0,p(2)], ':'), hold on
+p =
+    0.3635
+    0.6365
+ p = A*p, plot([0,p(1)], [0,p(2)], ':'), hold on
+p =
+    0.3635
+    0.6365
+ p = A*p, plot([0,p(1)], [0,p(2)], ':'), hold on
+p =
+    0.3635
+    0.6365
+ p = A*p, plot([0,p(1)], [0,p(2)], ':'), hold on
+p =
+    0.3635
+    0.6365
+% Question 5
+ A=[0.6, 0.1, 0.5; 0.2,0.7,0.1; 0.2,0.2,0.4]
+A =
+    0.6000    0.1000    0.5000
+    0.2000    0.7000    0.1000
+    0.2000    0.2000    0.4000
+ u = [ 1, 1,1 ]
+u =
+     1     1     1
+ u*A
+ans =
+     1     1     1
+ p = [0.5;0.3;0.2]
+p =
+    0.5000
+    0.3000
+    0.2000
+ u*p
+ans =
+     1
+ % After 1 year
+ A*p
+ans =
+    0.4300
+    0.3300
+    0.2400
+ % City: 43% , Suburb: 33%, Country 24%
+ %After 2 Years
+ (A^2)*p
+ans =
+    0.4110
+    0.3410
+    0.2480
+ % City: 41.1% , Suburb: 34.1%, Country 24.8%
+ %After 3 Years
+ (A^3)*p
+ans =
+    0.4047
+    0.3457
+    0.2496
+ % City: 40.47% , Suburb: 34.57%, Country 24.96%
+ % After 5 Years
+ (A^5)*p
+ans =
+    0.4011
+    0.3490
+    0.2500
+ % City: 40.11% , Suburb: 34.90%, Country 25.00%
+ %After 8 Years
+ (A^8)*p
+ans =
+    0.4001
+    0.3499
+    0.2500
+ % City: 40.01% , Suburb: 34.99%, Country 25.00%
+ %Question 5 (c)
+ u = nulbasis(A - eye(3)), v = u/sum(u)
+u =
+    1.6000
+    1.4000
+    1.0000
+v =
+    0.4000
+    0.3500
+    0.2500
+ % The are basically the same. It is telling us that after 8 
+ % years the population will be similar
+ % We conclude this by finding vector v and comparing it to A^8 *p
+ % Which are very similar 
